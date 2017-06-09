@@ -49,3 +49,12 @@ function vf_admin_menu() {
 function vf_admin_page(){
   include 'inc/back.php';
 }
+function vertigo_create_db() {
+
+  global $wpdb;
+  $charset_collate = $wpdb->get_charset_collate();
+  $table_name = $wpdb->prefix . 'vertigo_doctors';
+  include 'inc/dbData.php';
+ 
+}
+register_activation_hook( __FILE__, 'vertigo_create_db' );
