@@ -2,7 +2,7 @@
 require 'db_config.php';
 
 $post = $_POST;
-$filters = json_decode($post['filters'], true);
+$filters = json_decode(base64_decode($post['filters']), true);
 $sqlFilters = "";
 foreach ($filters as $key => $value) {
    if ($value != ""){

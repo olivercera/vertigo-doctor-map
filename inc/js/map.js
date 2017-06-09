@@ -2,7 +2,10 @@ $( document ).ready(function() {
   var minZoomLevel = 14;
   var map = null;
   var markers = [];
-  var filters = {};
+  var filters = {
+    "provider_first_name":"",
+    "provider_last_name":"",
+  };
   var iconMarkerUrl = url + "img/marker.png";
   $( "#clear" ).on( "click", function() {
     filters = {} ;
@@ -12,7 +15,7 @@ $( document ).ready(function() {
   $( "#find" ).on( "click", function() {
     filters.provider_first_name = $( "#firstName" ).val();
     filters.provider_last_name = $( "#lastName" ).val();
-  
+
     for (var i = 0; i < markers.length; i++) {
       markers[i].setMap(null);
     }
@@ -187,12 +190,11 @@ $( document ).ready(function() {
         var minLat = mixLatLng.lat();
         var maxLng = maxLatLng.lng();
         var minLng = mixLatLng.lng();
-
         $.ajax({
           dataType: 'json',
           type:'POST',
           url: url+'api/getRadius.php',
-          data: {minLat:minLat, maxLat:maxLat,minLng:minLng,maxLng:maxLng, filters: JSON.stringify(filters)}
+          data: {minLat:minLat, maxLat:maxLat,minLng:minLng,maxLng:maxLng, filters: btoa(JSON.stringify(filters))}
         }).done(function(data){
           //console.log(data.data)
           if(data.data.length > 0){

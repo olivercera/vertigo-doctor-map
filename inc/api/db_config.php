@@ -4,6 +4,6 @@
 	define("dbUser", "root");
 	define("dbPass", "");
 	define("dbName", $wpdb->dbname);
-	define("dbTable", "wp_vertigo_doctors");
+	define("dbTable", $wpdb->prefix .'vertigo_doctors');
 	$mysqli = new mysqli(dbHost, dbUser, dbPass, dbName);
 ?>
