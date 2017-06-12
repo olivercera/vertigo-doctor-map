@@ -54,9 +54,12 @@ $( document ).ready(function() {
     	$.each( data, function( key, value ) {
     	  	rows = rows + '<tr>';
     	  	rows = rows + '<td>'+value.id+'</td>';
+            rows = rows + '<td>'+value.provider_first_name+'</td>';
+            rows = rows + '<td>'+value.provider_last_name+'</td>';
+            rows = rows + '<td style="display:none">'+value.npi+'</td>';
     	  	rows = rows + '<td>'+value.provider_address+'</td>';
-            rows = rows + '<td>'+value.provider_lat+'</td>';
-            rows = rows + '<td>'+value.provider_long+'</td>';
+            rows = rows + '<td style="display:none">'+value.provider_business_loc_add_phone+'</td>';
+            rows = rows + '<td style="display:none">'+value.provider_level+'</td>';
     	  	rows = rows + '<td data-id="'+value.id+'">';
             rows = rows + '<button data-toggle="modal" data-target="#view-item" class="btn btn-primary view-item">View</button> ';
             rows = rows + '<button data-toggle="modal" data-target="#edit-item" class="btn btn-primary edit-item">Edit</button> ';
@@ -72,16 +75,19 @@ $( document ).ready(function() {
     $(".crud-submit").click(function(e){
         e.preventDefault();
         var form_action = $("#create-item").find("form").attr("action");
-        var address = $("#create-item").find("input[name='address']").val();
-        var latData = $("#create-item").find("textarea[name='lat']").val();
-        var longData = $("#create-item").find("textarea[name='long']").val();
+        var npi = $("#create-item").find("input[name='npi']").val();
+        var lastname = $("#create-item").find("input[name='providerLastName']").val();
+        var firstname = $("#create-item").find("input[name='providerFirstName']").val();
+        var address = $("#create-item").find("input[name='providerAddress']").val();
+        var level = $("#create-item").find("input[name='providerLevel']").val();
+        var phone = $("#create-item").find("input[name='providerBusinessPhone']").val();
 
-         if(address != '' && latData != '' && longData != ''){
+         if(address != '' && npi != '' && lastname != '' && firstname != '' && level != '' && phone != ''){
             $.ajax({
                 dataType: 'json',
                 type:'POST',
                 url: url + form_action,
-                data:{address:address, latData:latData, longData:longData}
+                data:{address:address, npi:npi, lastname:lastname, firstname:firstname, level:level, phone:phone}
             }).done(function(data){
                 $("#create-item").find("input[name='address']").val('');
                 $("#create-item").find("textarea[name='lat']").val('');
@@ -120,12 +126,19 @@ $( document ).ready(function() {
     $("body").on("click",".edit-item",function(){
 
         var id = $(this).parent("td").data('id');
+        var firstname = $(this).parent("td").prev("td").prev("td").prev("td").prev("td").prev("td").prev("td") .text();
+        var lastname = $(this).parent("td").prev("td").prev("td").prev("td").prev("td").prev("td").text();
+        var npi = $(this).parent("td").prev("td").prev("td").prev("td").prev("td").text();
         var address = $(this).parent("td").prev("td").prev("td").prev("td").text();
-        var latData = $(this).parent("td").prev("td").prev("td").text();
-        var longData = $(this).parent("td").prev("td").text();
-        $("#edit-item").find("input[name='address']").val(address);
-        $("#edit-item").find("textarea[name='lat']").val(latData);
-        $("#edit-item").find("textarea[name='long']").val(longData);
+        var phone = $(this).parent("td").prev("td").prev("td").text();
+        var level = $(this).parent("td").prev("td").text();
+
+        $("#edit-item").find("input[name='providerAddress']").val(address);
+        $("#edit-item").find("input[name='providerFirstName']").val(firstname);
+        $("#edit-item").find("input[name='providerLastName']").val(lastname);
+        $("#edit-item").find("input[name='providerBusinessPhone']").val(phone);
+        $("#edit-item").find("input[name='npi']").val(npi);
+        $("#edit-item").find("input[name='providerLevel']").val(level);
 
         $("#edit-item").find(".edit-id").val(id);
 
@@ -133,12 +146,19 @@ $( document ).ready(function() {
     $("body").on("click",".view-item",function(){
 
         var id = $(this).parent("td").data('id');
+         var firstname = $(this).parent("td").prev("td").prev("td").prev("td").prev("td").prev("td").prev("td") .text();
+        var lastname = $(this).parent("td").prev("td").prev("td").prev("td").prev("td").prev("td").text();
+        var npi = $(this).parent("td").prev("td").prev("td").prev("td").prev("td").text();
         var address = $(this).parent("td").prev("td").prev("td").prev("td").text();
-        var latData = $(this).parent("td").prev("td").prev("td").text();
-        var longData = $(this).parent("td").prev("td").text();
-        $("#view-item").find("input[name='address']").val(address);
-        $("#view-item").find("textarea[name='lat']").val(latData);
-        $("#view-item").find("textarea[name='long']").val(longData);
+        var phone = $(this).parent("td").prev("td").prev("td").text();
+        var level = $(this).parent("td").prev("td").text();
+
+        $("#view-item").find("input[name='providerAddress']").val(address);
+        $("#view-item").find("input[name='providerFirstName']").val(firstname);
+        $("#view-item").find("input[name='providerLastName']").val(lastname);
+        $("#view-item").find("input[name='providerBusinessPhone']").val(phone);
+        $("#view-item").find("input[name='npi']").val(npi);
+        $("#view-item").find("input[name='providerLevel']").val(level);
 
     });
 
@@ -148,18 +168,22 @@ $( document ).ready(function() {
 
         e.preventDefault();
         var form_action = $("#edit-item").find("form").attr("action");
-        var address = $("#edit-item").find("input[name='address']").val();
-        var latData = $("#edit-item").find("textarea[name='lat']").val();
-        var longData = $("#edit-item").find("textarea[name='long']").val();
+         var npi = $("#edit-item").find("input[name='npi']").val();
+        var lastname = $("#edit-item").find("input[name='providerLastName']").val();
+        var firstname = $("#edit-item").find("input[name='providerFirstName']").val();
+        var address = $("#edit-item").find("input[name='providerAddress']").val();
+        var level = $("#edit-item").find("input[name='providerLevel']").val();
+        var phone = $("#edit-item").find("input[name='providerBusinessPhone']").val();
+
 
         var id = $("#edit-item").find(".edit-id").val();
 
-        if(address != '' && latData != '' && longData != ''){
+         if(address != '' && npi != '' && lastname != '' && firstname != '' && level != '' && phone != ''){
             $.ajax({
                 dataType: 'json',
                 type:'POST',
                 url: url + form_action,
-                data:{id:id, address:address, latData:latData, longData:longData}
+                data:{id:id,address:address, npi:npi, lastname:lastname, firstname:firstname, level:level, phone:phone}
             }).done(function(data){
                 console.log(data)
                 getPageData();

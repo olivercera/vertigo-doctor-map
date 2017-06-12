@@ -46,9 +46,9 @@
 					<thead>
 					    <tr class="">
 						<th class="col-xs-1">Id</th>
-						<th class="col-xs-3">Address</th>
-						<th class="col-xs-1">Lat</th>
-						<th class="col-xs-1">Long</th>
+						<th class="col-xs-3">Fist Name</th>
+						<th class="col-xs-1">Last Name</th>
+						<th class="col-xs-1">Address</th>
 						<th class="col-xs-3">Action</th>
 					    </tr>
 					</thead>
@@ -71,24 +71,165 @@
 
 		      <div class="modal-body">
 		      		<form data-toggle="validator" action="api/create.php" method="POST">
+		      			<div class="row">
+			      			<div class="form-group col-xs-6" >
+								<label class="control-label" for="address">Npi:</label>
+								<input type="text" name="npi" class="form-control" data-error="Please enter npi." required />
+								<div class="help-block with-errors"></div>
+							</div>
 
-		      			<div class="form-group">
-							<label class="control-label" for="address">Address:</label>
-							<input type="text" name="address" class="form-control" data-error="Please enter address." required />
-							<div class="help-block with-errors"></div>
+							<div class="form-group col-xs-6">
+								<label class="control-label" for="lat">Provider Level:</label>
+								<input name="providerLevel" class="form-control" data-error="Please enter provider level." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+							
 						</div>
-
-						<div class="form-group">
-							<label class="control-label" for="lat">Lat:</label>
-							<textarea name="lat" class="form-control" data-error="Please enter lat." required></textarea>
-							<div class="help-block with-errors"></div>
+						<div class="row">
+							<div class="form-group col-xs-6" >
+								<label class="control-label" for="long">Provider First Name:</label>
+								<input name="providerFirstName" class="form-control" data-error="Please enter provider First Name." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+			      			<div class="form-group col-xs-6" >
+								<label class="control-label" for="long">Provider Last Name:</label>
+								<input name="providerLastName" class="form-control" data-error="Please enter provider Last Name." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+							
 						</div>
-						<div class="form-group">
-							<label class="control-label" for="long">Long:</label>
-							<textarea name="long" class="form-control" data-error="Please enter long." required></textarea>
-							<div class="help-block with-errors"></div>
+						<div class="row">
+							<div class="form-group col-xs-6" >
+								<label class="control-label" for="address">Provider Address:</label>
+								<input type="text" name="providerAddress" class="form-control" data-error="Please enter provider address." required />
+								<div class="help-block with-errors"></div>
+							</div>
+							<div class="form-group col-xs-6" >
+								<label class="control-label" for="long">Provider Business Phone:</label>
+								<input name="providerBusinessPhone" class="form-control" data-error="Please enter provider bussines phone." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
 						</div>
-
+							<!--div class="form-group col-xs-4" >
+								<label class="control-label" for="long">Provider Middle Name:</label>
+								<input name="providerMiddleName" class="form-control" data-error="Please enter provider Middle Name." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+							<div class="form-group col-xs-4" >
+								<label class="control-label" for="long">Provider Name Prefix:</label>
+								<input name="providerNamePrefix" class="form-control" data-error="Please enter provider name prefeix." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+							
+						</div>
+						<div class="row">
+							<div class="form-group col-xs-4" >
+								<label class="control-label" for="long">Provider Name Suffix:</label>
+								<input name="providerNamePrefix" class="form-control" data-error="Please enter provider Name Suffix." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+			      			<div class="form-group col-xs-4" >
+								<label class="control-label" for="long">Provider Credential:</label>
+								<input name="providerCredential" class="form-control" data-error="Please enter provider Credential." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+							<div class="form-group col-xs-4" >
+								<label class="control-label" for="long">Provider Other First Name:</label>
+								<input name="providerOtherFirstName" class="form-control" data-error="Please enter provider other First Name." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+						<div class="row">
+							
+							<div class="form-group col-xs-3" >
+								<label class="control-label" for="long">Provider Other Last Name:</label>
+								<input name="providerOtherLastName" class="form-control" data-error="Please enter provider other Last Name." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+			      			<div class="form-group col-xs-3" >
+								<label class="control-label" for="address">Provider Address:</label>
+								<input type="text" name="providerAddress" class="form-control" data-error="Please enter provider address." required />
+								<div class="help-block with-errors"></div>
+							</div>
+							<div class="form-group col-xs-3">
+								<label class="control-label" for="lat">Provider Lat:</label>
+								<input name="providerLat" class="form-control" data-error="Please enter lat." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+							<div class="form-group col-xs-3">
+								<label class="control-label" for="lat">Provider Long:</label>
+								<input name="providerLong" class="form-control" data-error="Please enter long." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group col-xs-3" >
+								<label class="control-label" for="long">Provider Business Phone:</label>
+								<input name="providerBusinessPhone" class="form-control" data-error="Please enter provider bussines phone." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+							<div class="form-group col-xs-3" >
+								<label class="control-label" for="long">Provider Business Fax:</label>
+								<input name="providerBusinessFax" class="form-control" data-error="Please enter provider bussines fax." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+							<div class="form-group col-xs-3" >
+								<label class="control-label" for="long">Last Updated Date:</label>
+								<input name="lastUpdatedDate" class="form-control" data-error="Please enter updated date." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+							<div class="form-group col-xs-3" >
+								<label class="control-label" for="long">Provider Gender Code:</label>
+								<input name="providerGenderCode" class="form-control" data-error="Please enter provider gender code." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group col-xs-4" >
+								<label class="control-label" for="long">Healthcare Provider Taxonomi Code:</label>
+								<input name="healthcareProviderTaxonomyCode" class="form-control" data-error="Please enter Healthcare taxonomy code." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+							<div class="form-group col-xs-4" >
+								<label class="control-label" for="long">Provider License Number:</label>
+								<input name="providerLicenseNumber" class="form-control" data-error="Please enter provider license number." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+							<div class="form-group col-xs-4" >
+								<label class="control-label" for="long">Provider License Number State:</label>
+								<input name="providerLicenseNumberState" class="form-control" data-error="Please enter provider license number state." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group col-xs-4" >
+								<label class="control-label" for="long">Healthcare Provider C2:</label>
+								<input name="healthcareProviderC2" class="form-control" data-error="Please enter Healthcare provider c2." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+							<div class="form-group col-xs-4" >
+								<label class="control-label" for="long">Healthcare Provider C3:</label>
+								<input name="healthcareProviderC3" class="form-control" data-error="Please enter Healthcare provider c3." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+							<div class="form-group col-xs-4" >
+								<label class="control-label" for="long">Other Provider Identifier:</label>
+								<input name="otherProviderIdentifier" class="form-control" data-error="Please enter other provider identifier." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group col-xs-4" >
+								<label class="control-label" for="long">Other Provider Code:</label>
+								<input name="otherProviderCode" class="form-control" data-error="Please enter other provider code." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+							<div class="form-group col-xs-4" >
+								<label class="control-label" for="long">Other Provider State:</label>
+								<input name="otherProviderState" class="form-control" data-error="Please enter other provider state." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+						</div-->
 						<div class="form-group">
 							<button type="submit" class="btn crud-submit btn-success">Submit</button>
 						</div>
@@ -114,21 +255,44 @@
 		      		<form data-toggle="validator" action="api/update.php" method="put">
 		      			<input type="hidden" name="id" class="edit-id">
 
-		      			<div class="form-group">
-							<label class="control-label" for="address">Address:</label>
-							<input type="text" name="address" class="form-control" data-error="Please enter address." required />
-							<div class="help-block with-errors"></div>
-						</div>
+		      			<div class="row">
+			      			<div class="form-group col-xs-6" >
+								<label class="control-label" for="address">Npi:</label>
+								<input type="text" name="npi" class="form-control" data-error="Please enter npi." required />
+								<div class="help-block with-errors"></div>
+							</div>
 
-						<div class="form-group">
-							<label class="control-label" for="lat">Lat:</label>
-							<textarea name="lat" class="form-control" data-error="Please enter lat." required></textarea>
-							<div class="help-block with-errors"></div>
+							<div class="form-group col-xs-6">
+								<label class="control-label" for="lat">Provider Level:</label>
+								<input name="providerLevel" class="form-control" data-error="Please enter provider level." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+							
 						</div>
-						<div class="form-group">
-							<label class="control-label" for="long">Long:</label>
-							<textarea name="long" class="form-control" data-error="Please enter long." required></textarea>
-							<div class="help-block with-errors"></div>
+						<div class="row">
+							<div class="form-group col-xs-6" >
+								<label class="control-label" for="long">Provider First Name:</label>
+								<input name="providerFirstName" class="form-control" data-error="Please enter provider First Name." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+			      			<div class="form-group col-xs-6" >
+								<label class="control-label" for="long">Provider Last Name:</label>
+								<input name="providerLastName" class="form-control" data-error="Please enter provider Last Name." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
+							
+						</div>
+						<div class="row">
+							<div class="form-group col-xs-6" >
+								<label class="control-label" for="address">Provider Address:</label>
+								<input type="text" name="providerAddress" class="form-control" data-error="Please enter provider address." required />
+								<div class="help-block with-errors"></div>
+							</div>
+							<div class="form-group col-xs-6" >
+								<label class="control-label" for="long">Provider Business Phone:</label>
+								<input name="providerBusinessPhone" class="form-control" data-error="Please enter provider bussines phone." required></input>
+								<div class="help-block with-errors"></div>
+							</div>
 						</div>
 
 						<div class="form-group">
@@ -150,21 +314,45 @@
 		      </div>
 
 		      <div class="modal-body">      		
-      			<div class="form-group">
-					<label class="control-label" for="address">Address:</label>
-					<input type="text" name="address" class="form-control" data-error="Please enter address." disabled />
-					<div class="help-block with-errors"></div>
-				</div>
+      				<div class="row">
+		      			<div class="form-group col-xs-6" >
+							<label class="control-label" for="address">Npi:</label>
+							<input type="text" name="npi" class="form-control" data-error="Please enter npi." disabled />
+							<div class="help-block with-errors"></div>
+						</div>
 
-				<div class="form-group">
-					<label class="control-label" for="lat">Lat:</label>
-					<textarea name="lat" class="form-control" data-error="Please enter lat." disabled></textarea>
-					<div class="help-block with-errors"></div>
-				</div>
-				<div class="form-group">
-					<label class="control-label" for="long">Long:</label>
-					<textarea name="long" class="form-control" data-error="Please enter long." disabled></textarea>
-					<div class="help-block with-errors"></div>
+						<div class="form-group col-xs-6">
+							<label class="control-label" for="lat">Provider Level:</label>
+							<input name="providerLevel" class="form-control" data-error="Please enter provider level." disabled></input>
+							<div class="help-block with-errors"></div>
+						</div>
+						
+					</div>
+					<div class="row">
+						<div class="form-group col-xs-6" >
+							<label class="control-label" for="long">Provider First Name:</label>
+							<input name="providerFirstName" class="form-control" data-error="Please enter provider First Name." disabled></input>
+							<div class="help-block with-errors"></div>
+						</div>
+		      			<div class="form-group col-xs-6" >
+							<label class="control-label" for="long">Provider Last Name:</label>
+							<input name="providerLastName" class="form-control" data-error="Please enter provider Last Name." disabled></input>
+							<div class="help-block with-errors"></div>
+						</div>
+						
+					</div>
+					<div class="row">
+						<div class="form-group col-xs-6" >
+							<label class="control-label" for="address">Provider Address:</label>
+							<input type="text" name="providerAddress" class="form-control" data-error="Please enter provider address." disabled />
+							<div class="help-block with-errors"></div>
+						</div>
+						<div class="form-group col-xs-6" >
+							<label class="control-label" for="long">Provider Business Phone:</label>
+							<input name="providerBusinessPhone" class="form-control" data-error="Please enter provider bussines phone." disabled></input>
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
 				</div>
 		      </div>
 		    </div>
