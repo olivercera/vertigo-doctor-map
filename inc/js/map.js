@@ -3,8 +3,7 @@ $( document ).ready(function() {
   var map = null;
   var markers = [];
   var filters = {
-    "provider_first_name":"",
-    "provider_last_name":"",
+    "provider_level":"",
   };
   var iconMarkerUrl = url + "img/marker.png";
   $( "#clear" ).on( "click", function() {
@@ -12,9 +11,11 @@ $( document ).ready(function() {
     $( ".form-control" ).val('');
     getRadius();
   });
+  $( "#radius" ).on( "mousemove", function() {
+    $( "#labelRadius" ).html('Radius: '+ $(this).val()+ 'km');
+  });
   $( "#find" ).on( "click", function() {
-    filters.provider_first_name = $( "#firstName" ).val();
-    filters.provider_last_name = $( "#lastName" ).val();
+    filters.provider_level = $( "#providerLevel" ).val();
 
     for (var i = 0; i < markers.length; i++) {
       markers[i].setMap(null);
@@ -25,7 +26,7 @@ $( document ).ready(function() {
   initMap();
   function initMap(){
     if ( navigator.geolocation ) {
-        $("#map-canvas").before('<input placeholder="Search" class="controls" type="text" id="input_MapLocation_search">') ; // No geolocation support, show default map
+       // $("#input_MapLocation_search2").before('<input placeholder="Search" class="controls" type="text" id="input_MapLocation_search">') ; // No geolocation support, show default map
 
         function success(pos) {
             // Location found, show map with these coordinates
@@ -112,8 +113,6 @@ $( document ).ready(function() {
 
         var input = document.getElementById('input_MapLocation_search');
         var searchBox = new google.maps.places.SearchBox(input);
-        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-
         // Bias the SearchBox results towards current map's viewport.
         map.addListener('bounds_changed', function() {
           searchBox.setBounds(map.getBounds());
