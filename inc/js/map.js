@@ -1,32 +1,33 @@
-$( document ).ready(function() {
-  var minZoomLevel = 14;
+jQuery( document ).ready(function() {
+  var minZoomLevel = 10;
   var map = null;
   var markers = [];
   var filters = {
-    "provider_level":"",
+    "provider_level":""
   };
-  var iconMarkerUrl = url + "img/marker.png";
-  $( "#clear" ).on( "click", function() {
+  var iconMarkerUrl = ajax_object.img_url + "inc/img/marker.png";
+  jQuery( "#clear" ).on( "click", function() {
     filters = {} ;
-    $( ".form-control" ).val('');
+    jQuery( ".form-control" ).val('');
     getRadius();
   });
-  $( "#radius" ).on( "mousemove", function() {
-    $( "#labelRadius" ).html('Radius: '+ $(this).val()+ 'km');
+  jQuery( "#radius" ).on( "mousemove", function() {
+    jQuery( "#labelRadius" ).html('Radius: '+ jQuery(this).val()+ ' miles');
   });
-  $( "#find" ).on( "click", function() {
-    filters.provider_level = $( "#providerLevel" ).val();
-
+  jQuery( "#find" ).on( "click", function() {
+    filters.provider_level = jQuery( "#providerLevel" ).val();
     for (var i = 0; i < markers.length; i++) {
       markers[i].setMap(null);
     }
     markers = [];
     getRadius();
   });
-  initMap();
+   jQuery(window).load(function(){ 
+      initMap();
+   });
   function initMap(){
     if ( navigator.geolocation ) {
-       // $("#input_MapLocation_search2").before('<input placeholder="Search" class="controls" type="text" id="input_MapLocation_search">') ; // No geolocation support, show default map
+       // jQuery("#input_MapLocation_search2").before('<input placeholder="Search" class="controls" type="text" id="input_MapLocation_search">') ; // No geolocation support, show default map
 
         function success(pos) {
             // Location found, show map with these coordinates
@@ -79,7 +80,7 @@ $( document ).ready(function() {
         };
 
         map = new google.maps.Map(document.getElementById('map-canvas'), myOptions);
-        //$("#map-canvas").prepend('<span style="width: 10px;height: 10px;left: 5px;right:5px;top:5px;bottom: 5px;margin: auto;position: absolute;background: url(https://agero.waterfield.com/Agero/Images/little-red-corvette.png);z-index: 999;"></span>') ;
+        //jQuery("#map-canvas").prepend('<span style="width: 10px;height: 10px;left: 5px;right:5px;top:5px;bottom: 5px;margin: auto;position: absolute;background: url(https://agero.waterfield.com/Agero/Images/little-red-corvette.png);z-index: 999;"></span>') ;
 
         // var image = 'enter path to image here';
         var marker = new google.maps.Marker({
@@ -100,11 +101,11 @@ $( document ).ready(function() {
             if (infowindow) {
                 infowindow.close();
             }
-            var bounds = map.getBounds();
+           /* var bounds = map.getBounds();
             var ne = bounds.getNorthEast(); // LatLng of the north-east corner
             var sw = bounds.getSouthWest(); // LatLng of the south-west corder
-            
-            getMarkers(sw, ne);
+           */ 
+            getMarkers();
             geocodeLatLng(geocoder, map, infowindow, map.getCenter(), marker);
         });
         google.maps.event.addListener(map, 'zoom_changed', function() {
@@ -169,7 +170,7 @@ $( document ).ready(function() {
         geocoder.geocode({'location': latLng}, function(results, status) {
             if (status === 'OK') {
                 if (results[1]) {
-                    console.log(latLng.toUrlValue(6));
+                    //console.log(latLng.toUrlValue(6));
                     //console.log(results[0].formatted_address);
                     address = results[0].formatted_address;
                     //infowindow.setContent(results[0].formatted_address);
@@ -179,48 +180,71 @@ $( document ).ready(function() {
         });
       }
       function getRadius(){
-        var bounds = map.getBounds();
-        var ne = bounds.getNorthEast(); // LatLng of the north-east corner
-        var sw = bounds.getSouthWest(); // LatLng of the south-west corder  
-        getMarkers(sw, ne);
+       // var bounds = map.getBounds();
+        //var ne = bounds.getNorthEast(); // LatLng of the north-east corner
+        //var sw = bounds.getSouthWest(); // LatLng of the south-west corder  
+        getMarkers();
       }
       function getMarkers(mixLatLng, maxLatLng) {
-        var maxLat = maxLatLng.lat();
+        /*var maxLat = maxLatLng.lat();
         var minLat = mixLatLng.lat();
         var maxLng = maxLatLng.lng();
-        var minLng = mixLatLng.lng();
-        $.ajax({
-          dataType: 'json',
-          type:'POST',
-          url: url+'api/getRadius.php',
-          data: {minLat:minLat, maxLat:maxLat,minLng:minLng,maxLng:maxLng, filters: btoa(JSON.stringify(filters))}
-        }).done(function(data){
-          //console.log(data.data)
+        var minLng = mixLatLng.lng();*/
+        var lat = map.getCenter().lat();
+        var lng = map.getCenter().lng();
+        var params = {
+          action: 'vertigo_doctor_get_radius',
+          lat: lat,
+          lng: lng,
+          distance: jQuery( "#radius" ).val(),
+          filters: btoa(JSON.stringify(filters))
+        };
+        jQuery.post(ajax_object.ajax_url, params, function(data) {
+          var data = JSON.parse(data);
           if(data.data.length > 0){
-            $.each( data.data, function( key, value ) {
+            jQuery.each( data.data, function( key, value ) {
               var parsedPosition = new google.maps.LatLng(value.provider_lat,value.provider_long);
               var marker = new google.maps.Marker({
                 position: parsedPosition,
                 map: map,
-                //title: value.provider_first_name + "\n" + value.provider_last_name,
                 icon: iconMarkerUrl,
-                //label: value.provider_level
               });
               markers.push(marker);
               var contentString = 
                 '<div id="content">'+
                 '<div id="siteNotice">'+
                 '</div>'+
-                '<b>'+checkField(value.provider_first_name)+' '+checkField(value.provider_last_name)+'</b><br>'+
+                '<b style="font-family:Montserrat">'+checkField(value.provider_first_name)+' '+checkField(value.provider_last_name)+'</b><br>'+
                 '<div id="bodyContent">'+
-                '<p><b>NPI: </b>'+checkField(value.npi)+'<br>'+
-                '<b>Adress: </b>'+checkField(value.provider_address)+'</p>' +
+                '<p style="font-family:Montserrat;font-size:11px; margin:5px 0"><b style="font-family:Montserrat">Provider Level # <span style="color:#999999">'+checkField(value.provider_level)+'</span></b><br>'+
+                '<b style="font-family:Montserrat">Address <span style="color:#999999">'+checkField(value.provider_address)+'</span></b></p>' +
                 '</div>';
               var infowindow = new google.maps.InfoWindow({
-                content: contentString
+                        content: contentString
               });
               marker.addListener('click', function() {
                 infowindow.open(map, marker);
+              });
+              google.maps.event.addListener(infowindow, 'domready', function() {
+                 var iwOuter = jQuery('.gm-style-iw'); 
+                 var infoWindowBox1 = iwOuter.prev().children(':nth-child(1)');        
+                 var infoWindowBox2 = iwOuter.prev().children(':nth-child(2)');        
+                 var infoWindowBox3 = iwOuter.prev().children(':nth-child(3)');
+                 var infoWindowBox4 = iwOuter.prev().children(':nth-child(4)');
+                 infoWindowBox1.css({
+                  'border-top': '27px solid #2980b9',
+                  'top': '74px'
+                 });
+                 infoWindowBox2.css({
+                  'background-color' : 'transparent',
+                  'border': 'none',
+                  'box-shadow' : 'none'
+                 });
+                 infoWindowBox3.children('div').css({'z-index' : '2'})
+                 infoWindowBox4.css({
+                  'border' : 'solid 2px #2980b9',
+                  'border-radius' : '4px'
+                });
               });
             });
           }

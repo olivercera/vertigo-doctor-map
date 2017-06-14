@@ -1,4 +1,4 @@
-$( document ).ready(function() {
+jQuery( document ).ready(function() {
     var page = 1;
     var current_page = 1;
     var total_page = 0;
@@ -10,15 +10,18 @@ $( document ).ready(function() {
 
     /* manage data list */
     function manageData() {
-        $.ajax({
-            dataType: 'json',
-            url: url+'api/getData.php',
-            data: {page:page,items_per_page:items_per_page}
-        }).done(function(data){
+
+        var params = {
+          action: 'vertigo_doctor_get_data',
+          page:page,
+          items_per_page:items_per_page
+        };
+        jQuery.post(ajax_object.ajax_url, params, function(data) {
+          var data = JSON.parse(data);
         	total_page = Math.ceil(data.total/items_per_page);
         	current_page = page;
 
-        	$('#pagination').twbsPagination({
+        	jQuery('#pagination').twbsPagination({
     	        totalPages: total_page,
     	        visiblePages: visiblePages,
     	        onPageClick: function (event, pageL) {
@@ -38,12 +41,14 @@ $( document ).ready(function() {
 
     /* Get Page Data*/
     function getPageData() {
-    	$.ajax({
-        	dataType: 'json',
-        	url: url+'api/getData.php',
-        	data: {page:page,items_per_page:items_per_page}
-    	}).done(function(data){
-    		manageRow(data.data);
+        var params = {
+          action: 'vertigo_doctor_get_data',
+          page:page,
+          items_per_page:items_per_page
+        };
+        jQuery.post(ajax_object.ajax_url, params, function(data) {
+            var data = JSON.parse(data);
+    	    manageRow(data.data);
     	});
     }
 
@@ -51,7 +56,7 @@ $( document ).ready(function() {
     /* Add new Item table row */
     function manageRow(data) {
     	var	rows = '';
-    	$.each( data, function( key, value ) {
+    	jQuery.each( data, function( key, value ) {
     	  	rows = rows + '<tr>';
     	  	rows = rows + '<td>'+value.id+'</td>';
             rows = rows + '<td>'+value.provider_first_name+'</td>';
@@ -68,32 +73,37 @@ $( document ).ready(function() {
     	  	rows = rows + '</tr>';
     	});
 
-    	$("tbody").html(rows);
+    	jQuery("tbody").html(rows);
     }
 
     /* Create new Item */
-    $(".crud-submit").click(function(e){
+    jQuery(".crud-submit").click(function(e){
         e.preventDefault();
-        var form_action = $("#create-item").find("form").attr("action");
-        var npi = $("#create-item").find("input[name='npi']").val();
-        var lastname = $("#create-item").find("input[name='providerLastName']").val();
-        var firstname = $("#create-item").find("input[name='providerFirstName']").val();
-        var address = $("#create-item").find("input[name='providerAddress']").val();
-        var level = $("#create-item").find("input[name='providerLevel']").val();
-        var phone = $("#create-item").find("input[name='providerBusinessPhone']").val();
+        var form_action = jQuery("#create-item").find("form").attr("action");
+        var npi = jQuery("#create-item").find("input[name='npi']").val();
+        var lastname = jQuery("#create-item").find("input[name='providerLastName']").val();
+        var firstname = jQuery("#create-item").find("input[name='providerFirstName']").val();
+        var address = jQuery("#create-item").find("input[name='providerAddress']").val();
+        var level = jQuery("#create-item").find("input[name='providerLevel']").val();
+        var phone = jQuery("#create-item").find("input[name='providerBusinessPhone']").val();
 
          if(address != '' && npi != '' && lastname != '' && firstname != '' && level != '' && phone != ''){
-            $.ajax({
-                dataType: 'json',
-                type:'POST',
-                url: url + form_action,
-                data:{address:address, npi:npi, lastname:lastname, firstname:firstname, level:level, phone:phone}
-            }).done(function(data){
-                $("#create-item").find("input[name='address']").val('');
-                $("#create-item").find("textarea[name='lat']").val('');
-                $("#create-item").find("textarea[name='long']").val('');
+            var params = {
+              action: 'vertigo_doctor_create',
+              address:address, 
+              npi:npi, 
+              lastname:lastname, 
+              firstname:firstname, 
+              level:level, 
+              phone:phone
+            };
+            jQuery.post(ajax_object.ajax_url, params, function(data) {
+              var data = JSON.parse(data);
+                jQuery("#create-item").find("input[name='address']").val('');
+                jQuery("#create-item").find("textarea[name='lat']").val('');
+                jQuery("#create-item").find("textarea[name='long']").val('');
                 getPageData();
-                $(".modal").modal('hide');
+                jQuery(".modal").modal('hide');
                 toastr.success('Item Created Successfully.', 'Success Alert', {timeOut: 5000});
             });
         }else{
@@ -104,16 +114,15 @@ $( document ).ready(function() {
     });
 
     /* Remove Item */
-    $("body").on("click",".remove-item",function(){
-        var id = $(this).parent("td").data('id');
-        var c_obj = $(this).parents("tr");
-
-        $.ajax({
-            dataType: 'json',
-            type:'POST',
-            url: url + 'api/delete.php',
-            data:{id:id}
-        }).done(function(data){
+    jQuery("body").on("click",".remove-item",function(){
+        var id = jQuery(this).parent("td").data('id');
+        var c_obj = jQuery(this).parents("tr");
+         var params = {
+              action: 'vertigo_doctor_delete',
+              id:id
+        };
+        jQuery.post(ajax_object.ajax_url, params, function(data) {
+              var data = JSON.parse(data);
             c_obj.remove();
             toastr.success('Item Deleted Successfully.', 'Success Alert', {timeOut: 5000});
             getPageData();
@@ -123,71 +132,77 @@ $( document ).ready(function() {
 
 
     /* Edit Item */
-    $("body").on("click",".edit-item",function(){
+    jQuery("body").on("click",".edit-item",function(){
 
-        var id = $(this).parent("td").data('id');
-        var firstname = $(this).parent("td").prev("td").prev("td").prev("td").prev("td").prev("td").prev("td") .text();
-        var lastname = $(this).parent("td").prev("td").prev("td").prev("td").prev("td").prev("td").text();
-        var npi = $(this).parent("td").prev("td").prev("td").prev("td").prev("td").text();
-        var address = $(this).parent("td").prev("td").prev("td").prev("td").text();
-        var phone = $(this).parent("td").prev("td").prev("td").text();
-        var level = $(this).parent("td").prev("td").text();
+        var id = jQuery(this).parent("td").data('id');
+        var firstname = jQuery(this).parent("td").prev("td").prev("td").prev("td").prev("td").prev("td").prev("td") .text();
+        var lastname = jQuery(this).parent("td").prev("td").prev("td").prev("td").prev("td").prev("td").text();
+        var npi = jQuery(this).parent("td").prev("td").prev("td").prev("td").prev("td").text();
+        var address = jQuery(this).parent("td").prev("td").prev("td").prev("td").text();
+        var phone = jQuery(this).parent("td").prev("td").prev("td").text();
+        var level = jQuery(this).parent("td").prev("td").text();
 
-        $("#edit-item").find("input[name='providerAddress']").val(address);
-        $("#edit-item").find("input[name='providerFirstName']").val(firstname);
-        $("#edit-item").find("input[name='providerLastName']").val(lastname);
-        $("#edit-item").find("input[name='providerBusinessPhone']").val(phone);
-        $("#edit-item").find("input[name='npi']").val(npi);
-        $("#edit-item").find("input[name='providerLevel']").val(level);
+        jQuery("#edit-item").find("input[name='providerAddress']").val(address);
+        jQuery("#edit-item").find("input[name='providerFirstName']").val(firstname);
+        jQuery("#edit-item").find("input[name='providerLastName']").val(lastname);
+        jQuery("#edit-item").find("input[name='providerBusinessPhone']").val(phone);
+        jQuery("#edit-item").find("input[name='npi']").val(npi);
+        jQuery("#edit-item").find("input[name='providerLevel']").val(level);
 
-        $("#edit-item").find(".edit-id").val(id);
+        jQuery("#edit-item").find(".edit-id").val(id);
 
     });
-    $("body").on("click",".view-item",function(){
+    jQuery("body").on("click",".view-item",function(){
 
-        var id = $(this).parent("td").data('id');
-         var firstname = $(this).parent("td").prev("td").prev("td").prev("td").prev("td").prev("td").prev("td") .text();
-        var lastname = $(this).parent("td").prev("td").prev("td").prev("td").prev("td").prev("td").text();
-        var npi = $(this).parent("td").prev("td").prev("td").prev("td").prev("td").text();
-        var address = $(this).parent("td").prev("td").prev("td").prev("td").text();
-        var phone = $(this).parent("td").prev("td").prev("td").text();
-        var level = $(this).parent("td").prev("td").text();
+        var id = jQuery(this).parent("td").data('id');
+         var firstname = jQuery(this).parent("td").prev("td").prev("td").prev("td").prev("td").prev("td").prev("td") .text();
+        var lastname = jQuery(this).parent("td").prev("td").prev("td").prev("td").prev("td").prev("td").text();
+        var npi = jQuery(this).parent("td").prev("td").prev("td").prev("td").prev("td").text();
+        var address = jQuery(this).parent("td").prev("td").prev("td").prev("td").text();
+        var phone = jQuery(this).parent("td").prev("td").prev("td").text();
+        var level = jQuery(this).parent("td").prev("td").text();
 
-        $("#view-item").find("input[name='providerAddress']").val(address);
-        $("#view-item").find("input[name='providerFirstName']").val(firstname);
-        $("#view-item").find("input[name='providerLastName']").val(lastname);
-        $("#view-item").find("input[name='providerBusinessPhone']").val(phone);
-        $("#view-item").find("input[name='npi']").val(npi);
-        $("#view-item").find("input[name='providerLevel']").val(level);
+        jQuery("#view-item").find("input[name='providerAddress']").val(address);
+        jQuery("#view-item").find("input[name='providerFirstName']").val(firstname);
+        jQuery("#view-item").find("input[name='providerLastName']").val(lastname);
+        jQuery("#view-item").find("input[name='providerBusinessPhone']").val(phone);
+        jQuery("#view-item").find("input[name='npi']").val(npi);
+        jQuery("#view-item").find("input[name='providerLevel']").val(level);
 
     });
 
 
     /* Updated new Item */
-    $(".crud-submit-edit").click(function(e){
+    jQuery(".crud-submit-edit").click(function(e){
 
         e.preventDefault();
-        var form_action = $("#edit-item").find("form").attr("action");
-         var npi = $("#edit-item").find("input[name='npi']").val();
-        var lastname = $("#edit-item").find("input[name='providerLastName']").val();
-        var firstname = $("#edit-item").find("input[name='providerFirstName']").val();
-        var address = $("#edit-item").find("input[name='providerAddress']").val();
-        var level = $("#edit-item").find("input[name='providerLevel']").val();
-        var phone = $("#edit-item").find("input[name='providerBusinessPhone']").val();
+        var form_action = jQuery("#edit-item").find("form").attr("action");
+         var npi = jQuery("#edit-item").find("input[name='npi']").val();
+        var lastname = jQuery("#edit-item").find("input[name='providerLastName']").val();
+        var firstname = jQuery("#edit-item").find("input[name='providerFirstName']").val();
+        var address = jQuery("#edit-item").find("input[name='providerAddress']").val();
+        var level = jQuery("#edit-item").find("input[name='providerLevel']").val();
+        var phone = jQuery("#edit-item").find("input[name='providerBusinessPhone']").val();
 
 
-        var id = $("#edit-item").find(".edit-id").val();
+        var id = jQuery("#edit-item").find(".edit-id").val();
 
          if(address != '' && npi != '' && lastname != '' && firstname != '' && level != '' && phone != ''){
-            $.ajax({
-                dataType: 'json',
-                type:'POST',
-                url: url + form_action,
-                data:{id:id,address:address, npi:npi, lastname:lastname, firstname:firstname, level:level, phone:phone}
-            }).done(function(data){
+             var params = {
+              action: 'vertigo_doctor_update',
+              id:id, 
+              address:address, 
+              npi:npi, 
+              lastname:lastname, 
+              firstname:firstname, 
+              level:level, 
+              phone:phone
+            };
+            jQuery.post(ajax_object.ajax_url, params, function(data) {
+              var data = JSON.parse(data);
                 console.log(data)
                 getPageData();
-                $(".modal").modal('hide');
+                jQuery(".modal").modal('hide');
                 toastr.success('Item Updated Successfully.', 'Success Alert', {timeOut: 5000});
             });
         }else{

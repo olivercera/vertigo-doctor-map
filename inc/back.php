@@ -12,11 +12,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
-    
-	<script type="text/javascript">
-    	var url = "<?php echo siteUrl;?>";
-    </script>
-    <script src="<?php echo siteUrl;?>js/item-ajax.js"></script>
     <style type="text/css">
     	.modal-dialog, .modal-content{
 		z-index:1051;
@@ -46,7 +41,7 @@
 					<thead>
 					    <tr class="">
 						<th class="col-xs-1">Id</th>
-						<th class="col-xs-3">Fist Name</th>
+						<th class="col-xs-3">First Name</th>
 						<th class="col-xs-1">Last Name</th>
 						<th class="col-xs-1">Address</th>
 						<th class="col-xs-3">Action</th>

@@ -1,6 +1,4 @@
 <?php
-require 'db_config.php';
-
 $post = $_POST;
 $filters = json_decode(base64_decode($post['filters']), true);
 $sqlFilters = "";
@@ -10,24 +8,12 @@ foreach ($filters as $key => $value) {
    	$sqlFilters = $sqlFilters." AND LOWER({$key}) LIKE '%{$value}%'";
    }
 }
-//var_dump($sqlFilters);
-
-
-$sql = "SELECT * FROM ".dbTable."  WHERE provider_lat BETWEEN {$post['minLat']} AND {$post['maxLat']} AND provider_long BETWEEN {$post['minLng']} AND {$post['maxLng']}"; 
+$sql = "SELECT id, provider_first_name, provider_last_name, provider_address, provider_lat, provider_long, npi,provider_level, ( 3959  * acos( cos( radians({$post['lat']}) ) * cos( radians( provider_lat ) ) * cos( radians( provider_long ) - radians({$post['lng']}) ) + sin( radians({$post['lat']}) ) * sin( radians( provider_lat ) ) ) ) AS distance FROM ".$wpdb->prefix ."vertigo_doctors HAVING distance < {$post['distance']}"; 
 $sql = $sql.$sqlFilters;
+$wpdb->prepare($sql);
+$result = $wpdb->get_results($sql);
 
-//var_dump($sql);
-
-  $result = $mysqli->query($sql);
-
- $json = [];
-  while($row = $result->fetch_assoc()){
-
-     $json[] = $row;
-
-  }
-
-  $data['data'] = $json;
+  $data['data'] = $result;
 
 echo json_encode($data);
 

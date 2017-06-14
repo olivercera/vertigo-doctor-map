@@ -1,32 +1,19 @@
 <?php
-require 'db_config.php';
 
-$num_rec_per_page = $_GET["items_per_page"];
+$num_rec_per_page = $_POST["items_per_page"];
 
-if (isset($_GET["page"])) { $page  = $_GET["page"]; } else { $page=1; };
+if (isset($_POST["page"])) { $page  = $_POST["page"]; } else { $page=1; };
 
 $start_from = ($page-1) * $num_rec_per_page;
 
-$sqlTotal = "SELECT * FROM ".dbTable;
-$sql = "SELECT * FROM ".dbTable." Order By id asc LIMIT $start_from, $num_rec_per_page"; 
+$sqlTotal = "SELECT * FROM ".$wpdb->prefix .'vertigo_doctors';
+$sql = $wpdb->prepare("SELECT * FROM ".$wpdb->prefix ."vertigo_doctors Order By id asc LIMIT $start_from, $num_rec_per_page"); 
 
+$result = $wpdb->get_results($sql);
+$result2 = $wpdb->query($sqlTotal);
 
-  $result = $mysqli->query($sql);
-
-
-  while($row = $result->fetch_assoc()){
-
-     $json[] = $row;
-
-  }
-
-  $data['data'] = $json;
-
-
-$result =  mysqli_query($mysqli,$sqlTotal);
-
-$data['total'] = mysqli_num_rows($result);
-
+$data['data'] = $result;
+$data['total'] = $result2;
 
 echo json_encode($data);
 
