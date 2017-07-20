@@ -214,10 +214,10 @@ jQuery( document ).ready(function() {
                 '<div id="content">'+
                 '<div id="siteNotice">'+
                 '</div>'+
-                '<b style="font-family:Montserrat">'+checkField(value.provider_first_name)+' '+checkField(value.provider_last_name)+'</b><br>'+
+                '<b style="font-family:Montserrat, sans-serif;">'+checkField(value.provider_first_name)+' '+checkField(value.provider_last_name)+'</b><br>'+
                 '<div id="bodyContent">'+
-                '<p style="font-family:Montserrat;font-size:11px; margin:5px 0"><b style="font-family:Montserrat">Provider Level # <span style="color:#999999">'+checkField(value.provider_level)+'</span></b><br>'+
-                '<b style="font-family:Montserrat">Address <span style="color:#999999">'+checkField(value.provider_address)+'</span></b></p>' +
+                '<p style="font-family:Montserrat, sans-serif;font-size:11px; margin:5px 0"><b>Provider Level # <span style="color:#999999">'+checkField(value.provider_level)+'</span></b><br>'+
+                '<b>Address <span style="color:#999999">'+checkField(value.provider_address)+'</span></b></p>' +
                 '</div>';
               var infowindow = new google.maps.InfoWindow({
                         content: contentString
@@ -233,7 +233,7 @@ jQuery( document ).ready(function() {
                  var infoWindowBox4 = iwOuter.prev().children(':nth-child(4)');
                  infoWindowBox1.css({
                   'border-top': '27px solid #2980b9',
-                  'top': '74px'
+                  'top': '7px'
                  });
                  infoWindowBox2.css({
                   'background-color' : 'transparent',

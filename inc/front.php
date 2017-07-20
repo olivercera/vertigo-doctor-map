@@ -1,6 +1,8 @@
 <?php
 	require 'config.php';
 ?>
+<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
  <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"-->
  <link rel="stylesheet" href="<?php echo siteUrl;?>css/styles.css">
@@ -12,7 +14,7 @@
 <div class="row" style="position:relative; height:550px;">
   	<div  class="search-box">
       <label>Search Your Location</label> 
-    	<form class="row">
+    	<div class="row">
 
     	  <div class="form-group col-sm-4 text-center">
     	    <input  id="input_MapLocation_search"  class="form-control" placeholder="Search Keywords">
@@ -34,7 +36,7 @@
         </div>
     	  
     	  <!--button type="button" id="clear" class="btn btn-link col-xs-1">Clear</button-->
-    	</form>
+    	</div>
   </div>
   <div class="col-xs-12">
   	<div id="map-canvas" style="width:100%px;height:500px" >
